@@ -2,8 +2,6 @@
 layout: default
 title: Vincent Dumoulin
 ---
-# Vincent Dumoulin
-
 ## About me
 
 I'm a Ph.D. student in the [LISA](http://lisa.iro.umontreal.ca/) lab at
