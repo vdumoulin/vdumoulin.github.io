@@ -1,3 +1,7 @@
+# Gem-related stuff
 .bundle/
 Gemfile
 Gemfile.lock
+
+# Jekyll-related stuff
+_site/
