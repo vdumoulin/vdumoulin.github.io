@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8"> 
-        <link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css"
-              rel="stylesheet"></link> 
-        <title>{{ page.title }}</title>
-    </head>
-    <body>
-        {{ content }}
-    </body>
-</html>
+{% include head.html %}
+
+    <h1>{{ page.title }}</h1>
+
+    {{ content }}
+
+{% include foot.html %}
