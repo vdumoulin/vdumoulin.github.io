@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /software/index.html
-title: Software
+title: Software Contributions
 tags: [software]
 ---
 
