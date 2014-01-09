@@ -6,4 +6,4 @@ categories: articles
 date: 2014-01-09
 ---
 
-# Hi.
+# Hi!
