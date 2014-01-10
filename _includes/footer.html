@@ -19,6 +19,9 @@
             <li><a id="twit" href="http://twitter.com/{{ site.owner.twitter }}" target="_blank"><span class="foot-link">@{{ site.owner.twitter }}</span></a></li>
             {% endif %}
 
+            {% if site.owner.twitter %}
+            <li><a id="git" href="https://github.com/{{ site.owner.github }}" target="_blank"><span class="foot-link">Github></a></li>
+            {% endif %}
 
             {% if site.owner.dribbble %}
             <li><a id="drib" href="http://dribbble.com/{{ site.owner.dribbble }}" target="_blank"><span class="foot-link">Dribbble</span></a></li>
