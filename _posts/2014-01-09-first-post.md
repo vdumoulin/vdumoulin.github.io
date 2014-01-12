@@ -16,7 +16,7 @@ corresponding object and trains it (like train.py), then run the function in
 ``state.extract_results`` on it, and store the returned values into
 ``state.results``.
 
-{% highlight python linenos %}
+{% highlight python %}
 def train_experiment(state, channel):
     """
     Train a model specified in state, and extract required results.
