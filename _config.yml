@@ -2,7 +2,7 @@ title:            Vincent Dumoulin
 tagline:          Personal website of Vincent Dumoulin
 description:      Personal website of Vincent Dumoulin
 #Comment out url when working locally to resolve base urls correctly
-# url: http://vdumoulin.github.io
+url: http://vdumoulin.github.io
 
 # Owner/author information
 owner:
