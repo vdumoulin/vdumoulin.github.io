@@ -969,7 +969,7 @@ header.site-header nav ul li a:hover {
   text-align: center;
 }
 .post img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
   margin: 33px auto;
