@@ -12,7 +12,7 @@ familiar with Pylearn2 (mostly its YAML file framework for describing
 experiments) and with [Jobman](http://deeplearning.net/software/jobman/), a tool
 to launch and manage experiments._
 
-### The problem
+## The problem
 
 Suppose you have a YAML file describing an experiment which looks like that:
 
@@ -73,7 +73,7 @@ Ideally, the solution should involve a single YAML file and some way of
 specifying how hyperparameter should be handled. One such solution exists,
 thanks to Pylearn2 and Jobman.
 
-### Solution overview
+## Solution overview
 
 Pylearn2 can instantiate a `Train` object specified by a YAML string via the
 `pylearn2.config.yaml_parse.load` method; using this method and Python's string
@@ -102,7 +102,7 @@ To summarize it all, we will
 
 Let's break it down.
 
-### Adapting the YAML file
+## Adapting the YAML file
 
 This step is pretty straightforward. Looking back to our example, the only lines
 we have to replace are
@@ -123,7 +123,7 @@ Using string subsitution syntax, they become
         },
 {% endhighlight %}
 
-### String substitution and training logic
+## String substitution and training logic
 
 The next step, assuming we already have a dictionary mapping hyperparameters
 to their values, would be to build a method which
@@ -221,7 +221,7 @@ Here we extract misclassification rate and NLL values at the last training
 epoch from their respective channels of the model's monitor and return a `DD`
 object containing those values.
 
-### Building the hyperparameter dictionary
+## Building the hyperparameter dictionary
 
 Let's now focus on the last piece of the puzzle: the Jobman configuration file.
 Your configuration file should contain
@@ -281,7 +281,7 @@ def log_uniform(low, high):
     return rval
 {% endhighlight %}
 
-### Running the whole thing
+## Running the whole thing
 
 Here's how you would train your model:
 
