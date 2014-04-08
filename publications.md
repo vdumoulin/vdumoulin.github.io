@@ -14,7 +14,7 @@ Solar Physics, August 2012, Volume 279, Issue 2, pp 383-409
 
 ### Not-yet-published and arXiv papers
 
-**A Ballistic Monte Carlo Approximation of π** [(pdf)](http://arxiv.org/pdf/1404.1499.pdf)
+**A Ballistic Monte Carlo Approximation of π** [(pdf)](http://arxiv.org/pdf/1404.1499.pdf)  
 Dumoulin, V. and Thouin, F.
 arXiv 2014
 
