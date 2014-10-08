@@ -250,6 +250,7 @@ following bit of Python code:
 {% highlight python %}
 import argparse
 import numpy
+import theano
 from pylearn2.config import yaml_parse
 from pylearn2.gui.patch_viewer import PatchViewer
 from pylearn2.utils import serial
@@ -323,6 +324,79 @@ Look at samples by typing
 # Assuming your YAML file is called ${YOUR_FILE_NAME}.yaml and your sampling
 # script is named ${SAMPLING_SCRIPT}.py
 python ${SAMPLING_SCRIPT}.py ${YOUR_FILE_NAME}.yaml
+{% endhighlight %}
+
+You can also make use of `VAE.log_likelihood_approximation` to compute
+approximate NLL performance measures of the trained model:
+
+{% highlight python %}
+import argparse
+import numpy
+import theano
+import theano.tensor as T
+from pylearn2.config import yaml_parse
+from pylearn2.utils import as_floatX, serial
+
+
+def print_nll(model):
+    dataset_yaml_src = model.dataset_yaml_src
+    train_set = yaml_parse.load(dataset_yaml_src)
+    valid_set = yaml_parse.load(dataset_yaml_src.replace("train", "valid"))
+    test_set = yaml_parse.load(dataset_yaml_src.replace("train", "test"))
+
+    X = T.matrix('X')
+    importance_sampling_nll = -model.log_likelihood_approximation(
+        X=X,
+        num_samples=20,
+    ).mean()
+    f = theano.function(inputs=[X], outputs=importance_sampling_nll)
+
+    batch_size = 100
+
+    # Train
+    train_importance_sampling_nll_list = []
+    numpy_X = as_floatX(train_set.get_design_matrix())
+    for i in xrange(numpy_X.shape[0] / batch_size):
+        numpy_X_batch = numpy_X[batch_size * i: batch_size * (i + 1)]
+        train_importance_sampling_nll_list.append(f(numpy_X_batch))
+    # Valid
+    valid_importance_sampling_nll_list = []
+    numpy_X = as_floatX(valid_set.get_design_matrix())
+    for i in xrange(numpy_X.shape[0] / batch_size):
+        numpy_X_batch = numpy_X[batch_size * i: batch_size * (i + 1)]
+        valid_importance_sampling_nll_list.append(f(numpy_X_batch))
+    # Test
+    test_importance_sampling_nll_list = []
+    numpy_X = as_floatX(test_set.get_design_matrix())
+    for i in xrange(numpy_X.shape[0] / batch_size):
+        numpy_X_batch = numpy_X[batch_size * i: batch_size * (i + 1)]
+        test_importance_sampling_nll_list.append(f(numpy_X_batch))
+
+    print "Train NLL approximation: " + \
+          str(numpy.mean(train_importance_sampling_nll_list))
+    print "Valid NLL approximation: " + \
+          str(numpy.mean(valid_importance_sampling_nll_list))
+    print " Test NLL approximation: " + \
+          str(numpy.mean(test_importance_sampling_nll_list))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("model_path", help="path to the pickled model")
+    args = parser.parse_args()
+
+    model_path = args.model_path
+    model = serial.load(model_path)
+
+    print_nll(model)
+{% endhighlight %}
+
+All you have to do is type
+
+{% highlight bash %}
+# Assuming your YAML file is called ${YOUR_FILE_NAME}.yaml and your sampling
+# script is named ${NLL_SCRIPT}.py
+python ${NLL_SCRIPT}.py ${YOUR_FILE_NAME}.yaml
 {% endhighlight %}
 
 ## TODO: Extending the VAE framework
