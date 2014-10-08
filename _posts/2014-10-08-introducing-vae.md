@@ -140,7 +140,7 @@ Here's the YAML file we'll be using for the example:
     },
     model: !obj:pylearn2.models.vae.VAE {
         nvis: &nvis 784,
-        nhid: &nhid 200,
+        nhid: &nhid 100,
         prior: !obj:pylearn2.models.vae.prior.DiagonalGaussianPrior {},
         conditional: !obj:pylearn2.models.vae.conditional.BernoulliVector {
             name: 'conditional',
@@ -404,7 +404,7 @@ Let's concentrate on this part of the YAML file:
 {% highlight text %}
 model: !obj:pylearn2.models.vae.VAE {
     nvis: &nvis 784,
-    nhid: &nhid 200,
+    nhid: &nhid 100,
     prior: !obj:pylearn2.models.vae.prior.DiagonalGaussianPrior {},
     conditional: !obj:pylearn2.models.vae.conditional.BernoulliVector {
         name: 'conditional',
@@ -441,4 +441,96 @@ model: !obj:pylearn2.models.vae.VAE {
 We define the dimensionality of \\(\\mathbf{x}\\) through `nvis` and the
 dimensionality of \\(\\mathbf{z}\\) through `nhid`.
 
-## TODO: Extending the VAE framework
+At a high level, the form of the prior, posterior and conditional distributions
+is selected through the choice of which subclasses to instantiate. Here we chose
+a gaussian prior with diagonal covariance matrix, a gaussian posterior with
+diagonal covariance matrix and a product of bernoulli as the conditional for
+\\(\\mathbf{x}\\).
+
+Note that we did not explicitly tell the model how to integrate the KL: it was
+able to find it on its own by calling
+`pylearn2.models.vae.kl.find_integrator_for`, which searched
+`pylearn2.models.vae.kl` for a match and returned an instance of
+`DiagonalGaussianPriorPosteriorKL`. If you were to explicitly tell the model how
+to integrate the KL term (for instance, if you have defined a new prior and a
+new `KLIntegrator` subclass to go with it), you would need to add
+
+{% highlight text %}
+kl_integrator: !obj:pylearn2.models.vae.kl.DiagonalGaussianPriorPosteriorKL {}
+{% endhighlight %}
+
+as a parameter to `VAE`'s constructor.
+
+`Conditional` instances (passed as `conditional` and `posterior` parameters)
+need a name upon instantiation. This is to avoid key collisions in the
+monitoring channels.
+
+They're also given **nested** `MLP` instance. Why this is needed will become
+clear soon. Notice how the last layers' dimensionality does
+not match either `nhid` or `nvis`. This is because they represent the last
+hidden representation from which the conditional parameters will be computed.
+You did not have to specify the layer mapping the last hidden representation to
+the conditional parameters because it was automatically inferred: after
+everything is instantiated, `VAE` calls `initialize_parameters` on `prior`,
+`conditional` and `posterior` and gives them relevant information about their
+input and output spaces. At that point, `Conditional` has enough information to
+infer how the last layer should look like. It calls its private
+`_get_default_output_layer` method, which returns a sane default output layer,
+and adds it to its MLP's list of layers. This is why a nested MLP is required:
+this allows `Conditional` to delay the initialization of its input space in
+order to add a layer to it in a clean fashion.
+
+Naturally, you may want to decide on your own how parameters should be computed
+based on the last hidden representation. This can be done through
+`Conditional`'s `output_layer_required` constructor parameter. It is set to
+`True` by default, but you can switch it off and explicitly put the last layer
+in the MLP. For instance, you could decide that the gaussian posterior's
+\\(\\log \\sigma\\) should not be too big or too small and want to force it to
+be between -1 and 1 by using a _tanh_ non-linearity. It can be done like so:
+
+{% highlight text %}
+posterior: !obj:pylearn2.models.vae.conditional.DiagonalGaussian {
+    name: 'posterior',
+    output_layer_required: 0,
+    mlp: !obj:pylearn2.models.mlp.MLP {
+        layers: [
+            !obj:pylearn2.models.mlp.RectifiedLinear {
+                layer_name: 'h_1',
+                dim: 200,
+                irange: 0.001,
+            },
+            !obj:pylearn2.models.mlp.CompositeLayer {
+                layer_name: 'phi',
+                layers: [
+                    !obj:pylearn2.models.mlp.Linear {
+                        layer_name: 'mu',
+                        dim: *nhid,
+                        irange: 0.001,
+                    },
+                    !obj:pylearn2.models.mlp.Tanh {
+                        layer_name: 'log_sigma',
+                        dim: *nhid,
+                        irange: 0.001,
+                    },
+                ],
+            },
+        ],
+    },
+}
+{% endhighlight %}
+
+There are safeguards in place to make sure your code won't crash without
+explanation in the case of a mistake: `Conditional` will verify that the custom
+output layer you put in MLP has the same output space as what it expects and
+raise an exception otherwise. Every `Conditional` subclass need to define how
+should the conditional parameters look like through a private
+`_get_required_mlp_output_space` method, and you should make sure that your
+custom output layer has the right output space by looking at the code. Moreover,
+you should have a look at the subclass' `_get_default_output_space`
+implementation to see what is the nature and order of the conditional parameters
+being computed.
+
+## Extending the VAE framework
+
+_This post will be updated soon with more information on how to write your own
+subclasses of `Prior`, `Conditional` and `KLIntegrator`._
