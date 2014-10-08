@@ -19,7 +19,7 @@ al.)](http://arxiv.org/abs/1401.4082) papers._
 
 # The model
 
-A VAE come with three moving parts:
+A VAE comes with three moving parts:
 
 * the prior distribution \\(p\_\\theta(\\mathbf{z})\\) on latent vector
   \\(\\mathbf{z}\\)
@@ -50,11 +50,8 @@ considering it as a deterministic function of \\(\\mathbf{x}\\) and some noise
 
 The VAE model is represented in Pylearn2 by the `VAE` class. It is responsible
 for high-level computation, such as computing the log-likelihood lower bound
-known as the _VAE criterion_ or an importance sampling estimate of the
-log-likelihood, both using the reparametrization trick, and acts as the
-interface between the model and other parts of Pylearn2 such as the
-VAE-associated costs (`pylearn2.costs.vae.VAECriterion` or
-`pylearn2.costs.vae.ImportanceSamplingCriterion`) or the user.
+or an importance sampling estimate of the log-likelihood, and acts as the
+interface between the model and other parts of Pylearn2.
 
 It delegates much of its functionality to three objects:
 
