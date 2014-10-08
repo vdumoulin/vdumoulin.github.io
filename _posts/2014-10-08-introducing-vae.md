@@ -145,7 +145,6 @@ Here's the YAML file we'll be using for the example:
         conditional: !obj:pylearn2.models.vae.conditional.BernoulliVector {
             name: 'conditional',
             mlp: !obj:pylearn2.models.mlp.MLP {
-                layer_name: 'decoder',
                 layers: [
                     !obj:pylearn2.models.mlp.RectifiedLinear {
                         layer_name: 'h_1',
@@ -163,10 +162,9 @@ Here's the YAML file we'll be using for the example:
         posterior: !obj:pylearn2.models.vae.conditional.DiagonalGaussian {
             name: 'posterior',
             mlp: !obj:pylearn2.models.mlp.MLP {
-                layer_name: "encoder",
                 layers: [
                     !obj:pylearn2.models.mlp.RectifiedLinear {
-                        layer_name: 'h_e_1',
+                        layer_name: 'h_1',
                         dim: 200,
                         irange: 0.001,
                     },
@@ -398,5 +396,49 @@ All you have to do is type
 # script is named ${NLL_SCRIPT}.py
 python ${NLL_SCRIPT}.py ${YOUR_FILE_NAME}.yaml
 {% endhighlight %}
+
+### More details
+
+Let's concentrate on this part of the YAML file:
+
+{% highlight text %}
+model: !obj:pylearn2.models.vae.VAE {
+    nvis: &nvis 784,
+    nhid: &nhid 200,
+    prior: !obj:pylearn2.models.vae.prior.DiagonalGaussianPrior {},
+    conditional: !obj:pylearn2.models.vae.conditional.BernoulliVector {
+        name: 'conditional',
+        mlp: !obj:pylearn2.models.mlp.MLP {
+            layers: [
+                !obj:pylearn2.models.mlp.RectifiedLinear {
+                    layer_name: 'h_1',
+                    dim: 200,
+                    irange: 0.001,
+                },
+                !obj:pylearn2.models.mlp.RectifiedLinear {
+                    layer_name: 'h_2',
+                    dim: 200,
+                    irange: 0.001,
+                },
+            ],
+        },
+    },
+    posterior: !obj:pylearn2.models.vae.conditional.DiagonalGaussian {
+        name: 'posterior',
+        mlp: !obj:pylearn2.models.mlp.MLP {
+            layers: [
+                !obj:pylearn2.models.mlp.RectifiedLinear {
+                    layer_name: 'h_1',
+                    dim: 200,
+                    irange: 0.001,
+                },
+            ],
+        },
+    },
+}
+{% endhighlight %}
+
+We define the dimensionality of \\(\\mathbf{x}\\) through `nvis` and the
+dimensionality of \\(\\mathbf{z}\\) through `nhid`.
 
 ## TODO: Extending the VAE framework
