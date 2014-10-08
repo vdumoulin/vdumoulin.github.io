@@ -113,7 +113,7 @@ Two `Cost` objects are compatible with the VAE framework: `VAECriterion` and
 defined in [(Kingma and Welling)](http://arxiv.org/abs/1312.6114), while
 `ImportanceSamplingCriterion` defines a cost based on the importance sampling
 approximation of the marginal log-likelihood which allows backpropagation
-through \\(\\q\\_\\phi(\\mathbf{z} \\mid \\mathbf{x})\\) via the
+through \\(q\\_\\phi(\\mathbf{z} \\mid \\mathbf{x})\\) via the
 reparametrization trick.
 
 ## Using the framework
