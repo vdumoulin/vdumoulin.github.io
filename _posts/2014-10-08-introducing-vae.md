@@ -83,7 +83,7 @@ samples.
 
 ### pylearn2.models.vae.kl.KLIntegrator
 
-Some combination of prior and posterior distributions (e.g. a gaussian prior
+Some combinations of prior and posterior distributions (e.g. a gaussian prior
 with diagonal covariance matrix and a gaussian posterior with diagonal
 covariance matrix) allow the analytic integration of the KL term in the VAE
 criterion. `KLIntegrator` is responsible for representing this analytic
