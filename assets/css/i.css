@@ -305,7 +305,7 @@ code {
   color: #f92672;
   font-family: 'Source Code Pro', sans-serif;
   font-weight: normal;
-  font-size: .5em;
+  font-size: .75em;
 }
 
 .highlight {
@@ -319,7 +319,7 @@ code {
   color: #f9f9f9;
   font-family: 'Source Code Pro', sans-serif;
   font-weight: normal;
-  font-size: .9em;
+  font-size: .75em;
   line-height: 1.25em;
 }
 .highlight code .lineno {
