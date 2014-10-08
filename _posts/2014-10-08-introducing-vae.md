@@ -1,7 +1,7 @@
 ---
 layout: post-no-feature
 title: Introducing the VAE framework in Pylearn2
-description: "Combining VAEs with 'Not your grandfather's machine learning library'"
+description: "Combining variational autoencoders with 'Not your grandfather's machine learning library'"
 categories: articles
 comments: true
 published: true
