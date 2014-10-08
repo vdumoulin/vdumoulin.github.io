@@ -130,7 +130,7 @@ python pylearn2/scripts/datasets/download_binarized_mnist.py
 
 Here's the YAML file we'll be using for the example:
 
-{% highlight text %}
+{% highlight yaml %}
 !obj:pylearn2.train.Train {
     dataset: &train !obj:pylearn2.datasets.binarized_mnist.BinarizedMNIST {
         which_set: 'train',
