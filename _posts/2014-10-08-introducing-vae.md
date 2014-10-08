@@ -13,8 +13,8 @@ the VAE model is now integrated in Pylearn2. In this post, I'll go over the
 main features of the VAE framework and how to extend it. I will assume the
 reader is familiar with the VAE model. If not, have a look at my [VAE demo
 webpage]({{ site.url }}/articles/vae-demo) as well as the
-[(Kingma and Welling)](http://arxiv.org/abs/1312.6114) and [(Rezende _et
-al._)](http://arxiv.org/abs/1401.4082) papers._
+[(Kingma and Welling)](http://arxiv.org/abs/1312.6114) and [(Rezende et
+al.)](http://arxiv.org/abs/1401.4082) papers._
 
 
 # The model
