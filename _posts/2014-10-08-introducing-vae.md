@@ -21,18 +21,18 @@ al.)](http://arxiv.org/abs/1401.4082) papers._
 
 A VAE come with three moving parts:
 
-* the prior distribution \\(p\\_\\theta(\\mathbf{z})\\) on latent vector
+* the prior distribution \\(p\_\\theta(\\mathbf{z})\\) on latent vector
   \\(\\mathbf{z}\\)
-* the conditional distribution \\(p\\_\\theta(\\mathbf{x} \\mid \\mathbf{z})\\)
+* the conditional distribution \\(p\_\\theta(\\mathbf{x} \\mid \\mathbf{z})\\)
   on observed vector \\(\\mathbf{x}\\)
-* the approximate posterior distribution \\(q\\_\\phi(\\mathbf{z} \\mid
+* the approximate posterior distribution \\(q\_\\phi(\\mathbf{z} \\mid
   \\mathbf{x})\\) on latent vector \\(\\mathbf{z}\\)
 
 The parameters \\(\\phi\\) and \\(\\theta\\) are arbitrary functions of
 \\(\\mathbf{x}\\) and \\(\\mathbf{z}\\) respectively.
 
 The model is trained to minimize the expected reconstruction loss of
-\\(\\mathbf{x}\\) under \\(\\q\\_\\phi(\\mathbf{z} \\mid \\mathbf{x})\\) and the
+\\(\\mathbf{x}\\) under \\(q\_\\phi(\\mathbf{z} \\mid \\mathbf{x})\\) and the
 KL-divergence between the prior and posterior distributions on \\(\\mathbf{z}\\)
 at the same time.
 
