@@ -474,8 +474,8 @@ input and output spaces. At that point, `Conditional` has enough information to
 infer how the last layer should look like. It calls its private
 `_get_default_output_layer` method, which returns a sane default output layer,
 and adds it to its MLP's list of layers. This is why a nested MLP is required:
-this allows `Conditional` to delay the initialization of its input space in
-order to add a layer to it in a clean fashion.
+this allows `Conditional` to delay the initialization of the MLP's input space
+in order to add a layer to it in a clean fashion.
 
 Naturally, you may want to decide on your own how parameters should be computed
 based on the last hidden representation. This can be done through
