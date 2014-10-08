@@ -46,7 +46,7 @@ considering it as a deterministic function of \\(\\mathbf{x}\\) and some noise
 
 ## Overview
 
-### `pylearn2.models.vae.VAE`
+### pylearn2.models.vae.VAE
 
 The VAE model is represented in Pylearn2 by the `VAE` class. It is responsible
 for high-level computation, such as computing the log-likelihood lower bound
@@ -62,29 +62,29 @@ It delegates much of its functionality to three objects:
 * `pylearn2.models.vae.prior.Prior`
 * `pylearn2.models.vae.kl.KLIntegrator`
 
-### `pylearn2.models.vae.conditional.Conditional`
+### pylearn2.models.vae.conditional.Conditional
 
 `Conditional` is used to represent conditional distributions in the VAE
-framework (namely \\(p\\_\\theta(\\mathbf{x} \\mid \\mathbf{z})\\)
-and \\(q\\_\\phi(\\mathbf{z} \\mid \\mathbf{x})\\)). It is responsible for
-mapping its input to parameters of the conditional distribution it represents,
-sampling from the conditional distribution with or without the reparametrization
-trick and computing the conditional log-likelihood of the distribution it
-represents given some samples.
+framework (namely the approximate posterior on \\(\\mathbf{z}\\) and the
+conditional on \\(\\mathbf{x}\\)). It is responsible for mapping its input to
+parameters of the conditional distribution it represents, sampling from the
+conditional distribution with or without the reparametrization trick and
+computing the conditional log-likelihood of the distribution it represents given
+some samples.
 
 Internally, the mapping from input to parameters of the conditional distribution
 is done via an `MLP` instance. This allows users familiar with the MLP framework
 to easily switch between different architectures for the encoding and
 decoding networks.
 
-### `pylearn2.models.vae.prior.Prior`
+### pylearn2.models.vae.prior.Prior
 
 `Prior` is used to represent the prior distribution on \\(\\mathbf{z}\\) in the
 VAE framework. It is responsible for sampling from the prior distribution and
 computing the log-likelihood of the distribution it represents given some
 samples.
 
-### `pylearn2.models.vae.kl.KLIntegrator`
+### pylearn2.models.vae.kl.KLIntegrator
 
 Some combination of prior and posterior distributions (e.g. a gaussian prior
 with diagonal covariance matrix and a gaussian posterior with diagonal
@@ -106,7 +106,7 @@ module also contains a method which can automatically infer which subclass of
 `VAE` automatically falls back to a stochastic approximation of the KL term when
 the analytical computation is not possible.
 
-### `pylearn2.costs.vae.{VAE,ImportanceSampling}Criterion`
+### pylearn2.costs.vae.{VAE,ImportanceSampling}Criterion
 
 Two `Cost` objects are compatible with the VAE framework: `VAECriterion` and
 `ImportanceSamplingCriterion`. `VAECriterion` represent the VAE criterion as
