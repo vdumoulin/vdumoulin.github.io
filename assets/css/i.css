@@ -614,7 +614,7 @@ input {
 }
 
 .wrap {
-  max-width: 1080px;
+  max-width: 960px;
   display: inline;
   float: left;
   width: 97%;
@@ -639,7 +639,7 @@ input {
   float: left;
   width: 77%;
   margin: 0 1.5%;
-  max-width: 680px;
+  max-width: 900px;
   display: block;
   margin: 0 auto;
   float: none;
