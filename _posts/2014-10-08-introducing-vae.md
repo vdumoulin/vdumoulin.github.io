@@ -318,7 +318,7 @@ Look at samples by typing
 {% highlight bash %}
 # Assuming your YAML file is called ${YOUR_FILE_NAME}.yaml and your sampling
 # script is named ${SAMPLING_SCRIPT}.py
-python ${SAMPLING_SCRIPT}.py ${YOUR_FILE_NAME}.yaml
+python ${SAMPLING_SCRIPT}.py ${YOUR_FILE_NAME}.pkl
 {% endhighlight %}
 
 You can also make use of `VAE.log_likelihood_approximation` to compute
@@ -389,9 +389,9 @@ if __name__ == "__main__":
 All you have to do is type
 
 {% highlight bash %}
-# Assuming your YAML file is called ${YOUR_FILE_NAME}.yaml and your sampling
+# Assuming your YAML file is called ${YOUR_FILE_NAME}.yaml and your NLL
 # script is named ${NLL_SCRIPT}.py
-python ${NLL_SCRIPT}.py ${YOUR_FILE_NAME}.yaml
+python ${NLL_SCRIPT}.py ${YOUR_FILE_NAME}.pkl
 {% endhighlight %}
 
 ### More details
