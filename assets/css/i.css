@@ -319,7 +319,7 @@ code {
   color: #f9f9f9;
   font-family: 'Source Code Pro', sans-serif;
   font-weight: normal;
-  font-size: .9em;
+  font-size: .8em;
   line-height: 1.25em;
 }
 .highlight code .lineno {
@@ -639,7 +639,7 @@ input {
   float: left;
   width: 77%;
   margin: 0 1.5%;
-  max-width: 900px;
+  max-width: 680px;
   display: block;
   margin: 0 auto;
   float: none;
