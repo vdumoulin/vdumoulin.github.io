@@ -614,7 +614,7 @@ input {
 }
 
 .wrap {
-  max-width: 1080;
+  max-width: 1080px;
   display: inline;
   float: left;
   width: 97%;
