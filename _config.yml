@@ -1,19 +1,23 @@
 title:            Vincent Dumoulin
 tagline:          Personal website of Vincent Dumoulin
 description:      Personal website of Vincent Dumoulin
-#Comment out url when working locally to resolve base urls correctly
-url: http://vdumoulin.github.io
 
 # Owner/author information
 owner:
   name:           Vincent Dumoulin
   avatar:         avatar.png
+<<<<<<< HEAD
   bio:            "WRITEME"
   email:          vincent.dumoulin@umontreal.ca
   twitter:        dumoulinv        
   github:         vdumoulin       
   disqus:         vdumoulin
-  
+  location:       "Montreal, QC"
+  # Plug in your disqus shortname!
+
+tools:
+  standards:      "HTML, SCSS, Jekyll"
+  software:       "git"
 
 # Links to include in top navigation
 # For external links add external: true
@@ -30,7 +34,7 @@ links:
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    America/New_York
 future:      true
-pygments:    true
+highlighter: pygments
 markdown:    kramdown
 
 kramdown:
@@ -46,6 +50,9 @@ kramdown:
     coderay_tab_width: 4
     coderay_bold_every: 10
     coderay_css: class
+
+sass:
+    style: :compressed
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink:   /:categories/:title
