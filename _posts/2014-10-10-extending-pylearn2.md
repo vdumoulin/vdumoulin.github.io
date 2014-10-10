@@ -16,6 +16,10 @@ implementations scattered in pretty much every experiment file? Pylearn2 looks
 attractive but you think porting your Theano code to it is too much of an
 investment? This tutorial is for you.
 
+Having played with Pylearn2 and looked at some of the tutorials is stongly
+recommended. If you're completely new to Pylearn2, have a look at the 
+[softmax regression tutorial](http://nbviewer.ipython.org/github/lisa-lab/pylearn2/blob/master/pylearn2/scripts/tutorials/softmax_regression/softmax_regression.ipynb).
+
 In my opinion, Pylearn2 is great for two things:
 
 * It allows you to experiment with new ideas without much implementation
@@ -109,7 +113,7 @@ class MyCostSubclass(Cost, DefaultDataSpecsMixin):
     # Here it is assumed that we are doing supervised learning
     supervised = True
 
-    def expr(model, data, **kwargs):
+    def expr(self, model, data, **kwargs):
         space, source = self.get_data_specs(model)
         space.validate(data)
         
@@ -180,7 +184,7 @@ class MyModelSubclass(Model):
         # This one is necessary only for supervised learning
         self.output_space = # Some `pylearn2.space.Space` subclass
 
-    def some_method_for_outputs(inputs):
+    def some_method_for_outputs(self, inputs):
         # Some computation involving the inputs
 {% endhighlight %}
 
@@ -244,18 +248,267 @@ MNIST dataset, which you can download as follows:
 wget http://deeplearning.net/data/mnist/mnist.pkl.gz
 {% endhighlight %}
 
-Unzip it, and you're ready to go.
+To make things easier to manipulate, we'll unzip that file into six different
+files:
+
+{% highlight bash %}
+python -c "from pylearn2.utils import serial; \
+           data = serial.load('mnist.pkl'); \
+           serial.save('mnist_train_X.pkl', data[0][0]); \
+           serial.save('mnist_train_y.pkl', data[0][1].reshape((-1, 1))); \
+           serial.save('mnist_valid_X.pkl', data[1][0]); \
+           serial.save('mnist_valid_y.pkl', data[1][1].reshape((-1, 1))); \
+           serial.save('mnist_test_X.pkl', data[2][0]); \
+           serial.save('mnist_test_y.pkl', data[2][1].reshape((-1, 1)))"
+{% endhighlight %}
 
 ## Supervised learning using logistic regression
 
 Let's keep things simple by porting to Pylearn2 what's pretty much the _Hello
 World!_ of supervised learning: logistic regression. If you haven't already, go
-read
+read the [deeplearning.net tutorial](http://www.deeplearning.net/tutorial/logreg.html#logreg)
+on logistic regression. Here's what we have to do:
 
-Let's assume you have a logistic regression model you're very proud of that
-strangely resembles the one from the
-[deeplearning.net tutorial](http://www.deeplearning.net/tutorial/logreg.html#logreg)
-and you would like to be able to use it in Pylearn2.
+* Implement the negative log-likelihood (NLL) loss in our `Cost` subclass
+* Initialize the model parameters W and b
+* Implement the model's logistic regression output
+
+Let's start by the `Cost` subclass:
+
+{% highlight python %}
+import theano.tensor as T
+from pylearn2.costs.cost import Cost, DefaultDataSpecsMixin
+
+
+class LogisticRegressionCost(DefaultDataSpecsMixin, Cost):
+    supervised = True
+
+    def expr(self, model, data, **kwargs):
+        space, source = self.get_data_specs(model)
+        space.validate(data)
+        
+        inputs, targets = data
+        outputs = model.logistic_regression(inputs)
+        loss = -(targets * T.log(outputs)).sum(axis=1)
+        return loss.mean()
+{% endhighlight %}
+
+Easy enough. We assumed our model has a `logistic_regression` method which
+accepts a batch of examples and computes the logistic regression output. We will
+implement that method in just a moment. We also computed the loss as the average
+negative log-likelihood of the targets given the logistic regression output, as
+described in the deeplearning.net tutorial. Also, notice how we set `supervised`
+to `True`.
+
+Now for the `Model` subclass:
+
+{% highlight python %}
+import numpy
+import theano.tensor as T
+from pylearn2.models.model import Model
+from pylearn2.space import VectorSpace
+from pylearn2.utils import sharedX
+
+
+class LogisticRegression(Model):
+    def __init__(self, nvis, nclasses):
+        super(LogisticRegression, self).__init__()
+
+        self.nvis = nvis
+        self.nclasses = nclasses
+
+        W_value = numpy.random.uniform(size=(self.nvis, self.nclasses))
+        self.W = sharedX(W_value, 'W')
+        b_value = numpy.zeros(self.nclasses)
+        self.b = sharedX(b_value, 'b')
+        self._params = [self.W, self.b]
+
+        self.input_space = VectorSpace(dim=self.nvis)
+        self.output_space = VectorSpace(dim=self.nclasses)
+
+    def logistic_regression(self, inputs):
+        return T.nnet.softmax(T.dot(inputs, self.W) + self.b)
+{% endhighlight %}
+
+The model's constructor receives the dimensionality of the input and the number
+of classes. It initializes the weights matrix and the bias vector with
+`sharedX`. It also sets its input space to an instance of `VectorSpace` of
+the dimensionality of the input (meaning it expects the input to be a batch of
+examples which are all vectors of size `nvis`) and its output space to an
+instance of `VectorSpace` of dimension `nclasses` (meaning it produces an output
+corresponding to a batch of probability vectors, one element for each possible
+class).
+
+The `logistic_regression` method does pretty much what you would expect: it
+returns a linear transformation of the input followed by a softmax
+non-linearity.
+
+How about we give it a try? Save those two code snippets in a single file (e.g.
+`log_reg.py` and save the following in `log_reg.yaml`:
+
+{% highlight text %}
+!obj:pylearn2.train.Train {
+    dataset: &train !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+        X: !pkl: 'mnist_train_X.pkl',
+        y: !pkl: 'mnist_train_y.pkl',
+        y_labels: 10,
+    },
+    model: !obj:log_reg.LogisticRegression {
+        nvis: 784,
+        nclasses: 10,
+    },
+    algorithm: !obj:pylearn2.training_algorithms.sgd.SGD {
+        batch_size: 200,
+        learning_rate: 1e-3,
+        monitoring_dataset: {
+            'train' : *train,
+            'valid' : !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+                X: !pkl: 'mnist_valid_X.pkl',
+                y: !pkl: 'mnist_valid_y.pkl',
+                y_labels: 10,
+            },
+            'test' : !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+                X: !pkl: 'mnist_test_X.pkl',
+                y: !pkl: 'mnist_test_y.pkl',
+                y_labels: 10,
+            },
+        },
+        cost: !obj:log_reg.LogisticRegressionCost {},
+        termination_criterion: !obj:pylearn2.termination_criteria.EpochCounter {
+            max_epochs: 15
+        },
+    },
+}
+{% endhighlight %}
+
+Run the following command:
+
+{% highlight bash %}
+python -c "from pylearn2.utils import serial; \
+           train_obj = serial.load_train_file('log_reg.yaml'); \
+           train_obj.main_loop()"
+{% endhighlight %}
+
+Congratulations, you just implemented your first model in Pylearn2!
+
+*(By the way, the targets you used to initialize `DenseDesignMatrix` instances
+were column matrices, yet your model expects to receive one-hot encoded vectors.
+The reason why you can do that is because Pylearn2 does the conversion for you
+via the `data_specs` mechanism. That's why specifying the model's `input_space`
+and `output_space` is important.*
+
+
+## Unsupervised learning using an autoencoder
+
+Let's now have a look at an unsupervised learning example: an autoencoder with
+tied weights. Once again, having read [deeplearning.net tutorial](http://www.deeplearning.net/tutorial/logreg.html#logreg)
+on the subject is recommended. Here's what we'll do:
+
+* Implement the binary cross-entropy reconstruction loss in our `Cost` subclass
+* Initialize the model parameters W and b
+* Implement the model's reconstruction logic
+
+Let's start again by the `Cost` subclass:
+
+{% highlight python %}
+import theano.tensor as T
+from pylearn2.costs.cost import Cost, DefaultDataSpecsMixin
+
+
+class AutoencoderCost(DefaultDataSpecsMixin, Cost):
+    supervised = False
+
+    def expr(self, model, data, **kwargs):
+        space, source = self.get_data_specs(model)
+        space.validate(data)
+        
+        X = data
+        X_hat = model.reconstruct(X)
+        loss = -(X * T.log(X_hat) + (1 - X) * T.log(1 - X_hat)).sum(axis=1)
+        return loss.mean()
+{% endhighlight %}
+
+We assumed our model has a `reconstruction` method which encodes and decodes its
+input. We also computed the loss as the average binary cross-entropy between the
+input and its reconstruction. This time, however, we set `supervised` to
+`False`.
+
+Now for the `Model` subclass:
+
+{% highlight python %}
+import numpy
+import theano.tensor as T
+from pylearn2.models.model import Model
+from pylearn2.space import VectorSpace
+from pylearn2.utils import sharedX
+
+
+class Autoencoder(Model):
+    def __init__(self, nvis, nhid):
+        super(Autoencoder, self).__init__()
+
+        self.nvis = nvis
+        self.nhid = nhid
+
+        W_value = numpy.random.uniform(size=(self.nvis, self.nhid))
+        self.W = sharedX(W_value, 'W')
+        b_value = numpy.zeros(self.nhid)
+        self.b = sharedX(b_value, 'b')
+        c_value = numpy.zeros(self.nvis)
+        self.c = sharedX(c_value, 'c')
+        self._params = [self.W, self.b, self.c]
+
+        self.input_space = VectorSpace(dim=self.nvis)
+
+    def reconstruct(self, X):
+        h = T.tanh(T.dot(X, self.W) + self.b)
+        return T.nnet.sigmoid(T.dot(h, self.W.T) + self.c)
+{% endhighlight %}
+
+The constructor looks a lot like for the logistic regression example, except
+that this time we don't need to specify the model's output space.
+
+The `reconstruct` method simply encodes and decodes its input.
+
+Let's try to train it. Save the two code snippets in a single file (e.g.
+`autoencoder.py` and save the following in `autoencoder.yaml`:
+
+{% highlight text %}
+!obj:pylearn2.train.Train {
+    dataset: &train !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+        X: !pkl: 'mnist_train_X.pkl',
+    },
+    model: !obj:autoencoder.Autoencoder {
+        nvis: 784,
+        nhid: 200,
+    },
+    algorithm: !obj:pylearn2.training_algorithms.sgd.SGD {
+        batch_size: 200,
+        learning_rate: 1e-3,
+        monitoring_dataset: {
+            'train' : *train,
+            'valid' : !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+                X: !pkl: 'mnist_valid_X.pkl',
+            },
+            'test' : !obj:pylearn2.datasets.dense_design_matrix.DenseDesignMatrix {
+                X: !pkl: 'mnist_test_X.pkl',
+            },
+        },
+        cost: !obj:autoencoder.AutoencoderCost {},
+        termination_criterion: !obj:pylearn2.termination_criteria.EpochCounter {
+            max_epochs: 15
+        },
+    },
+}
+{% endhighlight %}
+
+Run the following command:
+
+{% highlight bash %}
+python -c "from pylearn2.utils import serial; \
+           train_obj = serial.load_train_file('autoencoder.yaml'); \
+           train_obj.main_loop()"
+{% endhighlight %}
 
 # What have we gained?
 
