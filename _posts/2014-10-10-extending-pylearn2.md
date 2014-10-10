@@ -226,7 +226,7 @@ I said before, the name of the method doesn't really matter, as long as your
 `Cost` subclass knows that it's the one it has to call. This method expects a
 tensor variable as input and returns a symbolic expression involving the input
 and its parameters. What happens in between is up to you, and this is where you
-can put all the Theano code you could possibly hope for. Just like you would do
+can put all the Theano code you could possibly hope for, just like you would do
 in pure Theano scripts.
 
 # Show me examples
