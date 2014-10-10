@@ -7,7 +7,8 @@ tags: [publications]
 
 ### Published papers
 
-**On the Challenges of Physical Implementations of RBMs** [(arXiv version pdf)](http://arxiv.org/pdf/1312.5258v1.pdf)  
+**On the Challenges of Physical Implementations of RBMs**
+[(pdf)](http://www.aaai.org/ocs/index.php/AAAI/AAAI14/paper/view/8608)  
 Dumoulin, V., Goodfellow, I. J., Courville, A. and Bengio, Y.  
 Proceedings of the 28th AAAI Conference on Artificial Intelligence
 
