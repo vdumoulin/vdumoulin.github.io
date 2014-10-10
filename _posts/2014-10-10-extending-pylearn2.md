@@ -512,8 +512,102 @@ python -c "from pylearn2.utils import serial; \
 
 # What have we gained?
 
-TODO: talk about why replacing boilerplate code with THIS boilerplate code
+At this point you might be thinking _"There's still boilerplate code to write;
+what have we gained?"_
+
+The answer is we gained access to a plethora of scripts, model parts, costs and
+training algorithms all built into Pylearn2. You don't have to re-invent the
+wheel anymore when you wish to train using SGD and momentum. You want to switch
+from SGD to BGD? In Pylearn2 this is as simple as changing the training
+algorithm description in your YAML file.
+
+Like I said earlier, what I'm showing is the **bare minimum** needed to
+implement a model in Pylearn2. Nothing prevents you from digging deeper in the
+codebase and overriding some methods to gain new functionalities.
+
+Here's an example of how a few more lines of code can do a lot for you in
+Pylearn2.
+
+## Monitoring various quantities during training
+
+Let's monitor the classification error of our logistic regression classifier.
+
+To do so, you'll have to override `Model`'s `get_monitoring_data_specs` and
+`get_monitoring_channels` methods. The former specifies what the model needs for
+its monitoring, and in which format they should be provided. The latter does the
+actual monitoring by returning an `OrderedDict` mapping string identifiers to
+their quantities.
+
+Let's look at how it's done. Add the following to `LogisticRegression`:
+
+{% highlight python %}
+# Keeps things compatible for Python 2.6
+from theano.compat.python2x import OrderedDict
+from pylearn2.space import CompositeSpace
+
+
+class LogisticRegression(Model):
+    # (Your previous code)
+
+    def get_monitoring_data_specs(self):
+        space = CompositeSpace([self.get_input_space(),
+                                self.get_target_space()])
+        source = (self.get_input_source(), self.get_target_source())
+        return (space, source)
+
+    def get_monitoring_channels(self, data):
+        space, source = self.get_monitoring_data_specs(model)
+        space.validate(data)
+
+        X, y = data
+        y_hat = self.logistic_regression(X)
+        error = T.neq(y.argmax(axis=1), y_hat.argmax(axis=1)).mean()
+
+        return OrderedDict([('error', error)])
+{% endhighlight %}
+
+The content of `get_monitoring_data_specs` may look cryptic at first.
+Documentation for data specs can be found
+[here](http://deeplearning.net/software/pylearn2/internal/data_specs.html), but
+all you have to know is that this is the standard way in Pylearn2 to request a
+tuple whose first element represents features and second element represents
+targets.
+
+The content of `get_monitoring_channels` should more familiar. We start by
+checking `data` just as in `Cost` subclasses' implementation of `expr`, and we
+separate `data` into features and targets. We then get predictions by
+calling `logistic_regression` and compute the average error the standard way.
+We return an `OrderedDict` mapping `'error'` to the Theano expression for the
+classification error.
+
+Launch training again using
+
+{% highlight bash %}
+python -c "from pylearn2.utils import serial; \
+           train_obj = serial.load_train_file('log_reg.yaml'); \
+           train_obj.main_loop()"
+{% endhighlight %}
+
+and you'll see the classification error being displayed with other monitored
+quantities.
 
 # What's next?
 
-TODO: talk about exploring Pylearn2 to avoid reinventing the wheel for nothing.
+The examples given in this tutorial are obviously very simplistic and could be
+easily replaced by existing parts of Pylearn2. They do, however, show the path
+one needs to take to implement arbitrary ideas in Pylearn2.
+
+In order not to reinvent the wheel, it is oftentimes useful to dig into
+Pylearn2's codebase to see what's implemented. For instance, the VAE framework
+I wrote relies on the MLP framework to represent the mapping from inputs to
+conditional distribution parameters.
+
+Although code reuse is desirable, the ease with which it can be acomplished
+depends a lot on the level of familiarity you have with Pylearn2 and how
+different your model is from what's already in there. You should never feel
+ashamed to dump a bunch of Theano code inside `Model` subclass' method like I
+showed here if that's what works for you. Modularity and code reuse can be
+brought to your code gradually and at your own pace, and in the meantime you can
+still benefit from Pylearn2's features, like human-readable experiment
+descriptions, automatic monitoring of various quantities, easily-interchangeable
+training algorithms and so on.
