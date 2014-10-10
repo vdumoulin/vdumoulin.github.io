@@ -91,7 +91,7 @@ the training algorithm represents a cost. The base class for this object is
 `pylearn2.costs.cost.Cost` and does three main things:
 
 * It describes what data it needs to perform its duty and how it should be
-* formatted.
+  formatted.
 * It computes the cost expression by feeding the input to the model and
   receiving its output.
 * It differentiates the cost expression with respect to the model parameter and
