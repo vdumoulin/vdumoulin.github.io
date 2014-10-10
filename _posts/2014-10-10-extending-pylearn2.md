@@ -137,7 +137,7 @@ variable and a target tensor variable). How "what you need" is decided will be
 covered when we look at the `Model` subclass.
 
 In that case, `data` is a tuple containing the inputs as the first element and
-the targets as the second element (once again, bear with me everything isn't
+the targets as the second element (once again, bear with me if everything isn't
 completely clear for the moment, you'll get to understand soon enough).
 
 We then get the model output by calling its `some_method_for_outputs` method,
