@@ -57,9 +57,9 @@ a hard coded input dimension gets factored out as a constructor argument,
 functions being composed are separated into layers, etc.
 
 The [VAE framework]({{ site.url }}/articles/introducing-vae) didn't start out
-like it is now: all I did is reproduce what Joost van Amersfoort wrote in Theano
+like it is now: all I did is port what Joost van Amersfoort wrote in Theano
 (see his code [here](https://github.com/y0ast/Variational-Autoencoder/blob/master/Theano/VariationalAutoencoder.py))
-to reproduce the experiments in
+to Pylearn2 in order to reproduce the experiments in
 [(Kingma and Welling)](http://arxiv.org/abs/1312.6114). Over time, I made the
 code more modular and started reusing elements of the MLP framework, and at some
 point it got to a state where I felt that it could be useful for other people.
