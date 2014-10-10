@@ -141,7 +141,7 @@ the targets as the second element (once again, bear with me if everything isn't
 completely clear for the moment, you'll get to understand soon enough).
 
 We then get the model output by calling its `some_method_for_outputs` method,
-whose name and behaviour is really for you to decide, as long as you `Cost`
+whose name and behaviour is really for you to decide, as long as your `Cost`
 subclass knows which method to call on the model.
 
 Finally, we compute some loss measure on `outputs` and `targets` and return that
