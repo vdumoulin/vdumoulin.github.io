@@ -194,10 +194,10 @@ don't.
 
 You should then initialize you model parameters **as shared variables**:
 Pylearn2 will build an updates dictionary for your model variables using
-gradients returned by your cost. _Protip: the `pylearn2.utils.sharedX` method
+gradients returned by your cost. _**Protip: the `pylearn2.utils.sharedX` method
 initializes a shared variable with the value and an optional name you provide.
 This allows your code to be GPU-compatible without putting too much thought into
-it._ For instance, a weights matrix can be initialized this way:
+it.**_ For instance, a weights matrix can be initialized this way:
 
 {% highlight python %}
 import numpy
