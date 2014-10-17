@@ -103,7 +103,7 @@ handled by the `Cost` base class, and a very useful `DefaultDataSpecsMixin`
 mixin subclass is defined to handle the data description part (more about that
 when we look at the `Model` subclass).
 
-Let's look at how the subclass should look like:
+Let's look at how the subclass should look:
 
 {% highlight python %}
 from pylearn2.costs.cost import Cost, DefaultDataSpecsMixin
@@ -138,7 +138,7 @@ covered when we look at the `Model` subclass.
 
 In that case, `data` is a tuple containing the inputs as the first element and
 the targets as the second element (once again, bear with me if everything isn't
-completely clear for the moment, you'll get to understand soon enough).
+completely clear for the moment, you'll understand soon enough).
 
 We then get the model output by calling its `some_method_for_outputs` method,
 whose name and behaviour is really for you to decide, as long as your `Cost`
