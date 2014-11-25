@@ -109,7 +109,7 @@ Let's look at how the subclass should look:
 from pylearn2.costs.cost import Cost, DefaultDataSpecsMixin
 
 
-class MyCostSubclass(Cost, DefaultDataSpecsMixin):
+class MyCostSubclass(DefaultDataSpecsMixin, Cost):
     # Here it is assumed that we are doing supervised learning
     supervised = True
 
@@ -556,7 +556,7 @@ class LogisticRegression(Model):
         return (space, source)
 
     def get_monitoring_channels(self, data):
-        space, source = self.get_monitoring_data_specs(model)
+        space, source = self.get_monitoring_data_specs()
         space.validate(data)
 
         X, y = data
