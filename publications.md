@@ -19,6 +19,11 @@ Solar Physics, August 2012, Volume 279, Issue 2, pp 383-409
 
 ### Not-yet-published and arXiv papers
 
+**Blocks and Fuel: Frameworks for deep learning** [(pdf)](http://arxiv.org/pdf/1506.00619.pdf)  
+Van Merriënboer, B., Bahdanau, D., Dumoulin, V., Serdyuk, D., Warde-Farley, D.,
+Chorowski, J. and Bengio, Y.
+arXiv 2015
+
 **A Ballistic Monte Carlo Approximation of π** [(pdf)](http://arxiv.org/pdf/1404.1499.pdf)  
 Dumoulin, V. and Thouin, F.  
 arXiv 2014
