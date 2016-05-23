@@ -14,10 +14,10 @@ they need.
            [(github)](https://github.com/mila-udem/blocks)  
 A framework that helps build and manage neural network models using Theano.
 
-**Theano** [(website)](deeplearning.net/software/theano/)
+**Theano** [(website)](http://deeplearning.net/software/theano/)
            [(github)](https://github.com/Theano/Theano)  
 A Python library for compiling mathematical expressions.
 
-**Pylearn2** [(website)](deeplearning.net/software/pylearn2/)
+**Pylearn2** [(website)](http://deeplearning.net/software/pylearn2/)
              [(github)](https://github.com/lisa-lab/pylearn2)  
 A machine learning prototyping library based on Theano.
