@@ -9,7 +9,7 @@ tags: [about]
 
 I am a Ph.D. candidate at [MILA](https://mila.umontreal.ca/) in Université de
 Montréal. I am co-advised by
-[Yoshua Bengio](http://www.iro.umontreal.ca/~bengioy/) and
-[Aaron Courville](http://aaroncourville.wordpress.com/)
+[Yoshua Bengio](https://mila.umontreal.ca/en/person/bengio-yoshua/) and
+[Aaron Courville](https://mila.umontreal.ca/en/person/aaron-courville/).
 
 I am interested in generative modelling applied to computer vision.
