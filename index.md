@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /index.html
-title: About Me
+title: Vincent Dumoulin
 tags: [about]
 ---
 
