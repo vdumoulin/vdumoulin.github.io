@@ -1,6 +1,5 @@
 ---
 layout: page
-permalink: /about/index.html
 title: About Me
 tags: [about]
 ---
