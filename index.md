@@ -1,7 +1,15 @@
 ---
-layout: home
-title: "Recent Posts"
-tags: [Jekyll, theme, responsive, blog, template]
-image:
-  feature: typewriter.jpg
+layout: page
+permalink: /about/index.html
+title: About Me
+tags: [about]
 ---
+
+![Vincent Dumoulin]({{ site.url }}/images/me.jpg)
+
+I am a Ph.D. candidate at [MILA](https://mila.umontreal.ca/) in Université de
+Montréal. I am co-advised by
+[Yoshua Bengio](https://mila.umontreal.ca/en/person/bengio-yoshua/) and
+[Aaron Courville](https://mila.umontreal.ca/en/person/aaron-courville/).
+
+I am interested in generative modelling applied to computer vision.
