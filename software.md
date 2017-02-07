@@ -14,7 +14,7 @@ they need.
            [(github)](https://github.com/mila-udem/blocks)  
 A framework that helps build and manage neural network models using Theano.
 
-**Theano** [(website)](http://deeplearning.net/software/theano/)
+**Theano** [(website)](https://theano.readthedocs.io/en/latest/)
            [(github)](https://github.com/Theano/Theano)  
 A Python library for compiling mathematical expressions.
 

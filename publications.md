@@ -7,6 +7,19 @@ tags: [publications]
 
 ### Published papers
 
+**A Learned Representation For Artistic Style**
+[(code)](https://github.com/tensorflow/magenta/tree/master/magenta/models/image_stylization)
+[(pdf)](https://arxiv.org/pdf/1610.07629.pdf)  
+Dumoulin, V., Shlens, J. and Kudlur, M.  
+ICLR, 2017
+
+**Adversarially Learned Inference**
+[(webpage)](https://ishmaelbelghazi.github.io/ALI)
+[(pdf)](https://arxiv.org/pdf/1606.00704.pdf)  
+Dumoulin, V., Belghazi, I., Poole, B., Mastropietro, O., Lamb, A., Arjovsky, M.
+and Courville, A.  
+ICLR, 2017
+
 **Deconvolution and Checkerboard Artifacts**
 [(webpage)](http://distill.pub/2016/deconv-checkerboard/)  
 Odena, A., Dumoulin, V. and Olah, C.  
@@ -23,15 +36,6 @@ Bolduc, C.,  Charbonneau, P., Dumoulin, V., Bourqui, M. S. and Crouch, A. D.
 Solar Physics, August 2012, Volume 279, Issue 2, pp 383-409
 
 ### Not-yet-published and arXiv papers
-
-**A Learned Representation For Artistic Style** [(pdf)](https://arxiv.org/pdf/1610.07629.pdf)  
-Dumoulin, V., Shlens, J. and Kudlur, M.  
-arXiv 2016 (Submitted to ICLR2017)
-
-**Adversarially Learned Inference** [(pdf)](https://arxiv.org/pdf/1606.00704.pdf)  
-Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O.
-and Courville, A.  
-arXiv 2016 (Submitted to ICLR2017)
 
 **A guide to convolution arithmetic for deep learning** [(pdf)](https://arxiv.org/pdf/1603.07285.pdf)  
 Dumoulin, V. and Visin, F.  
