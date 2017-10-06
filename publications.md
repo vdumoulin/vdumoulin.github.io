@@ -7,6 +7,11 @@ tags: [publications]
 
 ### Published papers
 
+**Exploring the structure of a real-time, arbitrary neural artistic stylization network**
+[(pdf)](https://arxiv.org/pdf/1705.06830.pdf)  
+Ghiasi, G., Lee, H., Kudlur, M., Dumoulin, V. and Shlens, J.  
+BMVC, 2017
+
 **A Learned Representation For Artistic Style**
 [(code)](https://github.com/tensorflow/magenta/tree/master/magenta/models/image_stylization)
 [(pdf)](https://arxiv.org/pdf/1610.07629.pdf)  
@@ -35,7 +40,20 @@ and Mid-Ultraviolet.** [(pdf)](http://link.springer.com/content/pdf/10.1007%2Fs1
 Bolduc, C.,  Charbonneau, P., Dumoulin, V., Bourqui, M. S. and Crouch, A. D.  
 Solar Physics, August 2012, Volume 279, Issue 2, pp 383-409
 
+### Workshop papers
+
+**Learning Visual Reasoning Without Strong Priors**
+[(pdf)](https://arxiv.org/pdf/1707.03017.pdf)  
+Perez, E., de Vries, H., Strub, F., Dumoulin, V. and Courville, A.  
+Machine Learning in Speech and Language Processing Workshop, ICML 2017
+
 ### Not-yet-published and arXiv papers
+
+**FiLM: Visual Reasoning with a General Conditioning Layer**
+[(code)](https://github.com/ethanjperez/film)
+[(pdf)](https://arxiv.org/pdf/1709.07871.pdf)  
+Perez, E., de Vries, H., Strub, F., Dumoulin, V. and Courville, A.  
+arXiv 2017
 
 **A guide to convolution arithmetic for deep learning** [(pdf)](https://arxiv.org/pdf/1603.07285.pdf)  
 Dumoulin, V. and Visin, F.  
